@@ -135,7 +135,10 @@ contract Vesting is Context, ReentrancyGuard {
         require(tokenAddress != address(0), "Invalid Token Address");
         require(recipient != address(0), "Invalid Recipient Address");
         require(recipient != msg.sender, "Sender Can't be Recipient");
-        require(recipient != address(this), "Sablier Contract Can't be Recipient");
+        require(
+            recipient != address(this),
+            "Vesting Contract Can't be Recipient"
+        );
 
         uint256 duration = stopTime - startTime;
 
@@ -206,7 +209,10 @@ contract Vesting is Context, ReentrancyGuard {
             delete streams[streamId];
         }
 
-        bool result = IERC20(stream.tokenAddress).transfer(stream.recipient, amount);
+        bool result = IERC20(stream.tokenAddress).transfer(
+            stream.recipient,
+            amount
+        );
         assert(result);
 
         emit WithdrawlFromStream(streamId, stream.recipient, amount);
@@ -233,8 +239,10 @@ contract Vesting is Context, ReentrancyGuard {
 
         IERC20 _erc20 = IERC20(stream.tokenAddress);
 
-        if (recipientBalance > 0) assert(_erc20.transfer(stream.recipient, recipientBalance));
-        if (senderBalance > 0) assert(_erc20.transfer(stream.sender, senderBalance));
+        if (recipientBalance > 0)
+            assert(_erc20.transfer(stream.recipient, recipientBalance));
+        if (senderBalance > 0)
+            assert(_erc20.transfer(stream.sender, senderBalance));
 
         delete streams[streamId];
 

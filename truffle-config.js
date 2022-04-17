@@ -16,6 +16,7 @@
  * public/private key pairs. If you're publishing your code to GitHub make sure you load this
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
+ * @format
  */
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
@@ -73,17 +74,21 @@ module.exports = {
     // }
   },
 
-  plugins: ['solidity-coverage'],
+  plugins: ['solidity-coverage', 'truffle-contract-size'],
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
+    reporter: 'eth-gas-reporter',
+    reporterOptions: {
+      excludeContracts: ['Migrations']
+    }
     // timeout: 100000
   },
 
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.11",    // Fetch exact version from solc-bin (default: truffle's version)
+      version: '0.8.11', // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -92,7 +97,7 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
 
   // Truffle DB is currently disabled by default; to enable it, change enabled:
